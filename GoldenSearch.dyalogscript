@@ -1,0 +1,58 @@
+
+:Namespace GoldenSection
+
+    ⍝ --- Configuration ---
+    r ← ((5*0.5) - 1) ÷ 2
+    tol ← 0.0001
+    maxIter ← 100
+    interval ← 0 5
+
+    ⍝ --- Objective Function ---
+    F ← { (⍵ - 2) × (⍵ - 2) }
+
+    ⍝ --- Golden Section Search Algorithm ---
+    ∇ result ← GoldenSearch bounds; a; b; w; c; d; fc; fd; i
+
+        a ← 1⊃bounds
+        b ← 2⊃bounds
+
+        :For i :In ⍳maxIter
+
+            :If (b - a) < tol
+                result ← (a + b) ÷ 2
+                :Return
+            :EndIf
+
+            w ← b - a
+            c ← b - r × w
+            d ← a + r × w
+
+            fc ← F c
+            fd ← F d
+
+            :If fc < fd
+                b ← d
+            :Else
+                a ← c
+            :EndIf
+
+        :EndFor
+
+        result ← (a + b) ÷ 2
+
+    ∇
+
+    ⍝ --- Compute & Output ---
+    res ← GoldenSearch interval
+
+    ⎕ ← 'GOLDEN SECTION SEARCH METHOD'
+    ⎕ ← '-----------------------------'
+    ⎕ ← 'Initial Interval: ', ⍕ interval
+    ⎕ ← 'Golden Ratio:     ', ⍕ r
+    ⎕ ← 'Tolerance:        ', ⍕ tol
+    ⎕ ← 'Max Iterations:   ', ⍕ maxIter
+    ⎕ ← '-----------------------------'
+    ⎕ ← 'Approximate Minimum: ', ⍕ res
+    ⎕ ← 'Minimum F:           ', ⍕ F res
+
+:EndNamespace
