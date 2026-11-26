@@ -1,0 +1,58 @@
+
+:Namespace NewtonRaphson
+
+    ⍝ --- Configuration ---
+    tol ← 0.000001
+    maxIter ← 100
+    x0 ← 1.5
+
+    ⍝ --- Objective Function ---
+    F ← { (⍵ * 3) - ⍵ - 2 }
+
+    ⍝ --- Derivative Function ---
+    DF ← { (3 × ⍵ * 2) - 1 }
+
+    ⍝ --- Newton-Raphson Algorithm ---
+    ∇ root ← NewtonSearch initial; x; fx; dfx; xNext; i
+        x ← initial
+
+        :For i :In ⍳maxIter
+
+            fx ← F x
+            dfx ← DF x
+
+            ⍝ Check for zero derivative
+            :If dfx = 0
+                root ← x
+                :Return
+            :EndIf
+
+            ⍝ Newton-Raphson Formula
+            xNext ← x - fx ÷ dfx
+
+            ⍝ Check convergence
+            :If |xNext - x < tol
+                root ← xNext
+                :Return
+            :EndIf
+
+            x ← xNext
+
+        :EndFor
+
+        root ← x
+    ∇
+
+    ⍝ --- Compute & Output ---
+    result ← NewtonSearch x0
+
+    ⎕ ← 'NEWTON-RAPHSON METHOD'
+    ⎕ ← '-----------------------------'
+    ⎕ ← 'Initial Guess: ', ⍕ x0
+    ⎕ ← 'Tolerance:     ', ⍕ tol
+    ⎕ ← 'Max Iterations:', ⍕ maxIter
+    ⎕ ← '-----------------------------'
+    ⎕ ← 'Approximate Root: ', ⍕ result
+    ⎕ ← 'Function Value:   ', ⍕ F result
+
+:EndNamespace
